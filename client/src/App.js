@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import AppNaviBar from "./components/AppNaviBar";
 import UpdatePage from "./components/UpdatePage";
@@ -17,17 +17,25 @@ function App() {
         siteList: [],
     });
 
-    useEffect(() => {
-        let data = { ...userData };
-        axios.get(`/api/authenticated-only`)
-            .then(async (authResponse) => {
-                data.isLoggedIn = authResponse.data.success;
+    useLayoutEffect(() => {
+        async function startup() {
+            try {
+                let data = { ...userData };
+                const authResponse = await axios.get(`/api/authenticated-only`)
+                console.log(authResponse);
+                data.isLoggedIn = authResponse.data;
                 if (data.isLoggedIn) {
                     const siteList = await axios.get('/api/site');
                     data.siteList = siteList.data;
                     setUserData(data);
                 }
-            }).catch(err => { });
+            } catch (error) {
+                console.log("An error happened ", error);
+
+            }
+        }
+
+        startup();
     }, []);
 
     return (

@@ -13,7 +13,8 @@ function SiteCard(props) {
             axios.delete(`/api/series/${seriesId}`)
             .then((response) => {
                 let tmp = [...seriesList];
-                tmp.splice(tmp.findIndex(item => item.id == seriesId), 1);
+                let seriesIdInt = parseInt(seriesId);
+                tmp.splice(tmp.findIndex(item => item.id === seriesIdInt), 1);
                 setSeriesList(tmp);
             });
         }
