@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Form, CardGroup} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import axios from 'axios';
 import SeriesCard from "../SeriesCard";
 import UserSeriesContext from "../../util/UserSeriesContext";
@@ -110,7 +110,7 @@ function SearchPage() {
             <div className="container">
                 <div className="row">
                     <div className="col">
-                        <CardGroup>
+                        <div className="card-group">
                             {searchResults.map((searchItem, index) => (
                                 <SeriesCard 
                                     key={index} 
@@ -123,7 +123,7 @@ function SearchPage() {
                                     buttonClickAction={addSeries}/>)
                                 )
                             }
-                        </CardGroup>
+                        </div>
                     </div>
                 </div>
             </div>

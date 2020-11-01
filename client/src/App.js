@@ -23,7 +23,7 @@ function App() {
                 let data = { ...userData };
                 const authResponse = await axios.get(`/api/authenticated-only`)
                 console.log(authResponse);
-                data.isLoggedIn = authResponse.data;
+                data.isLoggedIn = authResponse.data.success;
                 if (data.isLoggedIn) {
                     const siteList = await axios.get('/api/site');
                     data.siteList = siteList.data;
@@ -31,7 +31,6 @@ function App() {
                 }
             } catch (error) {
                 console.log("An error happened ", error);
-
             }
         }
 
@@ -41,7 +40,7 @@ function App() {
     return (
         <UserSeriesContext.Provider value={{ userData: userData }}>
             <Router>
-                {userData.isLoggedIn ?
+                {userData.isLoggedIn === true ?
                     (<div>
                         <AppNaviBar />
                         <Switch>
