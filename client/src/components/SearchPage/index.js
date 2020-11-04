@@ -2,16 +2,13 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Button, Form} from "react-bootstrap";
 import axios from 'axios';
 import SeriesCard from "../SeriesCard";
-import UserSeriesContext from "../../util/UserSeriesContext";
 
 function SearchPage() {
-    const {userData} = useContext(UserSeriesContext);
     const [seriesList, setSeriesList] = useState([]);
+    const [siteList, setSiteList] = useState([]);
     const [searchString, setSearchStringState] = useState("");
     const [searchResults, setSearchResultsState] = useState([]);
     const [siteSelected, setSiteState] = useState();
-
-    const siteList = userData.siteList;
 
     useEffect(() => {
         if(siteList.length && (!siteSelected)){
@@ -23,6 +20,10 @@ function SearchPage() {
         axios.get('/api/series')
             .then((resp) => {
                 setSeriesList(resp.data);
+            });
+        axios.get('/api/site')
+            .then((resp) => {
+                setSiteList(resp.data);
             })
     }, [])
 

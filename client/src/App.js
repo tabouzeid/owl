@@ -6,41 +6,25 @@ import SearchPage from "./components/SearchPage";
 import LoginPage from "./components/LoginPage";
 import SignupPage from "./components/SignupPage";
 import UserSeriesContext from "./util/UserSeriesContext";
+import API from "./util/API";
 import axios from "axios";
 import './App.css';
 
 
 function App() {
     const [userData, setUserData] = useState({
-        isLoggedIn: false,
+        isLoggedIn: API.isLoggedIn(),
         seriesList: [],
-        siteList: [],
     });
 
     useLayoutEffect(() => {
-        async function startup() {
-            try {
-                let data = { ...userData };
-                const authResponse = await axios.get(`/api/authenticated-only`)
-                console.log(authResponse);
-                data.isLoggedIn = authResponse.data.success;
-                if (data.isLoggedIn) {
-                    const siteList = await axios.get('/api/site');
-                    data.siteList = siteList.data;
-                    setUserData(data);
-                }
-            } catch (error) {
-                console.log("An error happened ", error);
-            }
-        }
-
-        startup();
+        API.checkIfLoggedInUser(setUserData);
     }, []);
 
     return (
         <UserSeriesContext.Provider value={{ userData: userData }}>
             <Router>
-                {userData.isLoggedIn === true ?
+                {API.isLoggedIn() === true ?
                     (<div>
                         <AppNaviBar />
                         <Switch>
