@@ -16,13 +16,16 @@ function AppNaviBar() {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark justify-content-end">
-            <ul className="nav justify-content-end">
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark justify-content-end">
+            <ul className="navbar-nav justify-content-end">
                 <li className="nav-item">
                     <a className="nav-link" href="/">Updates</a>
                 </li>
                 <li className="nav-item">
                     <a className="nav-link" href="/search">Search</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="/profile">Profile</a>
                 </li>
                 <li className="nav-item">
                     <a className="nav-link" href="#" onClick={handleLogout}>Logout</a>

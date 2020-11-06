@@ -10,6 +10,15 @@ const seriesController = require('../controller/seriesController');
 const siteController = require('../controller/siteController');
 
 module.exports = function(app) {
+    app.get('/api/user/', AccessMiddleware.hasAccess, (req, res) => {
+        res.json(
+            {
+                name: req.user.name,
+                email: req.user.email,
+            }
+        );
+    });
+
     app.get('/api/site', AccessMiddleware.hasAccess, (req, res) => {
         siteController.findAll(req, res);
     });

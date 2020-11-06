@@ -5,9 +5,9 @@ import UpdatePage from "./components/UpdatePage";
 import SearchPage from "./components/SearchPage";
 import LoginPage from "./components/LoginPage";
 import SignupPage from "./components/SignupPage";
+import ProfilePage from "./components/ProfilePage";
 import UserSeriesContext from "./util/UserSeriesContext";
 import API from "./util/API";
-import axios from "axios";
 import './App.css';
 
 
@@ -31,6 +31,7 @@ function App() {
                             <Route exact path="/" component={UpdatePage} />
                             <Route exact path="/search" component={SearchPage} />
                             <Route exact path="/login" component={UpdatePage} />
+                            <Route exact path="/profile" component={ProfilePage} />
                             <Route exact path="/signup" component={UpdatePage} />
                         </Switch>
                     </div>)
@@ -40,6 +41,7 @@ function App() {
                             <Route exact path="/" component={LoginPage} />
                             <Route exact path="/search" component={LoginPage} />
                             <Route exact path="/login" component={LoginPage} />
+                            <Route exact path="/profile" component={LoginPage} />
                             <Route exact path="/signup" component={SignupPage} />
                         </Switch>
                     )}
