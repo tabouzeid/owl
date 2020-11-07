@@ -15,18 +15,34 @@ module.exports = {
             })
             .catch((err) => {
                 res.status(422).json(err);
-            });
+            }); 
     },
     updateUser: (req, res) => {
+        let update = {};
+        if (req.body.email) {
+            update["email"] = req.body.email;
+        }
+
+        if (req.body.name) {
+            update["name"] = req.body.name;
+        }
+
+        if (req.body.password) {
+            update["password"] = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null);
+        }
+        console.log("going to update to ", update);
         db.User
-            .update({
-                where: { email: req.params.email },
-                raw: true,
-            }, req.body)
+            .update(update,
+                {
+                    where: { id: req.user.id },
+                    raw: true,
+                }
+            )
             .then((updateResp) => {
                 res.json(updateResp);
             })
             .catch((err) => {
+                console.log(err)
                 res.status(422).json(err);
             });
     },

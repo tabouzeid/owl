@@ -2,12 +2,14 @@
 // =============================================================
 const axios = require("axios");
 const cheerio = require("cheerio");
+const bcrypt = require("bcryptjs");
 const {DateTime} = require("luxon");
 
 const db = require("../models")
 const AccessMiddleware = require("../config/middleware/isAuthenticated");
 const seriesController = require('../controller/seriesController');
 const siteController = require('../controller/siteController');
+const userController = require('../controller/userController');
 
 module.exports = function(app) {
     app.get('/api/user/', AccessMiddleware.hasAccess, (req, res) => {
@@ -17,6 +19,16 @@ module.exports = function(app) {
                 email: req.user.email,
             }
         );
+    });
+
+    app.put('/api/user/', AccessMiddleware.hasAccess, async (req, res) => {
+        if (req.body.currentPassword) {
+            const passwordMatch = await bcrypt.compare(req.body.currentPassword, req.user.password)
+            if (!passwordMatch) {
+                res.status(421).json({ msg: "password doesn't match" })
+            }
+        }
+        userController.updateUser(req, res);
     });
 
     app.get('/api/site', AccessMiddleware.hasAccess, (req, res) => {
