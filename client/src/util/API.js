@@ -7,7 +7,7 @@ module.exports = {
         axios.get('/api/authenticated-only')
         .then((response) => {
             localStorage.setItem(localStorageKey, JSON.stringify(response.data));
-            contextSetter(response);
+            contextSetter({isLoggedIn: response.data.success});
         })
         .catch((error) => {
             localStorage.setItem(localStorageKey, "{}");

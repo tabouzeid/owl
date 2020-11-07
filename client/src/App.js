@@ -14,7 +14,6 @@ import './App.css';
 function App() {
     const [userData, setUserData] = useState({
         isLoggedIn: API.isLoggedIn(),
-        seriesList: [],
     });
 
     useLayoutEffect(() => {

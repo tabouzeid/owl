@@ -41,10 +41,10 @@ function SiteCard(props) {
                                 <span className="sr-only">Loading...</span>
                             </div> : ""}
                         </div>
-                        <div className="col-4">
+                        <div className="col-6">
 
                         </div>
-                        <div className="btn-group btn-group-toggle col-4 float-right" data-toggle="buttons">
+                        <div className="btn-group btn-group-toggle col-2 float-right"  style={{width: "10px"}} data-toggle="buttons">
                             <label className={"btn btn-primary btn-sm "+unreadSelected}>
                                 <input type="radio" name="options" id="option1" autoComplete="off" onClick={event => setUnreadFlag(true)} /> Unread
                             </label>

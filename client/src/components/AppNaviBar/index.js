@@ -6,6 +6,7 @@ function AppNaviBar() {
     const history = useHistory();
 
     const handleLogout = (event) => {
+        localStorage.setItem("userInfo", "{}");
         axios.get("/api/logout")
             .then((response) => {
                 history.push("/");
