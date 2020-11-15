@@ -1,22 +1,8 @@
 const db = require("../models");
+const { ROLES } = require("../config/middleware/roles");
 const bcrypt = require("bcryptjs");
 
 module.exports = {
-    findByEmail: (req, res) => {
-        db.User
-            .findOne({
-                where: {
-                    email: req.params.email
-                },
-                raw: true,
-            })
-            .then((updateResp) => {
-                res.json(updateResp);
-            })
-            .catch((err) => {
-                res.status(422).json(err);
-            }); 
-    },
     updateUser: (req, res) => {
         let update = {};
         if (req.body.email) {
@@ -30,7 +16,10 @@ module.exports = {
         if (req.body.password) {
             update["password"] = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null);
         }
-        console.log("going to update to ", update);
+        
+        if(req.user.role === ROLES.ADMIN && req.body.role) {
+            update['role'] = req.body.role;
+        }
         db.User
             .update(update,
                 {
@@ -42,7 +31,6 @@ module.exports = {
                 res.json(updateResp);
             })
             .catch((err) => {
-                console.log(err)
                 res.status(422).json(err);
             });
     },

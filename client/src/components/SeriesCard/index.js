@@ -1,5 +1,4 @@
 import React from "react";
-import {Col, Card, Button} from "react-bootstrap";
 import axios from "axios";
 import "./style.css";
 
@@ -12,6 +11,7 @@ function SeriesCard(props) {
     const markSeriesViewed = () => {
         if(props.series.id){
             axios.put(`/api/series/${props.series.id}/mark_last_checked`);
+            props.series.hasUpdate = false;
         }
     }
 
@@ -25,27 +25,28 @@ function SeriesCard(props) {
     }
 
     return (
-        <Col className="mb-3">
-            <Card className="text-center" style={{marginTop:'10px', width: '18rem'}}>
-                <Card.Body>
-                    <Card.Title className="trunc" style={{textTransform: "capitalize"}}>{seriesName}</Card.Title>
+        <div className="col mb-3">
+            <div className="card text-center" style={{marginTop:'10px', width: '18rem'}}>
+                <div className="card-body">
+                    <div className="card-title trunc" style={{textTransform: "capitalize"}}>{seriesName}</div>
                     <a href={seriesUrl} rel="noopener noreferrer" target="_blank">
-                        <Card.Img src={imageUrl} onClick={markSeriesViewed} className="mr-3 rounded img-thumbnail" style={{width:'auto', height:'250px'}}/>
+                        <img src={imageUrl} onClick={markSeriesViewed} className="mr-3 rounded card-img img-thumbnail" style={{width:'auto', height:'250px'}}/>
                     </a>
-                </Card.Body>
-                <Card.Footer>
-                    <Button variant={props.buttonColor}
+                </div>
+                <div className="card-footer">
+                    <button type="button" className={"btn btn-" + props.buttonColor}
                             disabled={isAlreadyAdded()}
                             onClick={props.buttonClickAction}
                             seriesname={seriesName}
                             siteid={props.site.id}
                             seriesimageurl={imageUrl}
                             seriesidonsite={props.series.seriesIdOnSite}
-                            seriesid={props.series.id}> {props.buttonText}
-                    </Button>
-                </Card.Footer>
-            </Card>
-        </Col>
+                            seriesid={props.series.id}> 
+                            {props.buttonText}
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 }
 

@@ -7,8 +7,9 @@ import LoginPage from "./components/LoginPage";
 import SignupPage from "./components/SignupPage";
 import ProfilePage from "./components/ProfilePage";
 import UserSeriesContext from "./util/UserSeriesContext";
-import API from "./util/API";
 import './App.css';
+
+const API = require("./util/API");
 
 
 function App() {

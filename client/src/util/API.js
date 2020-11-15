@@ -2,30 +2,42 @@ const axios = require('axios');
 
 const localStorageKey = 'userInfo';
 
+function getLocalStorageUserInfo() {
+    let userInfo = localStorage.getItem(localStorageKey) || '{}';
+    return JSON.parse(userInfo);
+}
+
+function setLocalStorageUserInfo(userInfo) {
+    localStorage.setItem(localStorageKey, JSON.stringify(userInfo));
+}
+
 module.exports = {
     checkIfLoggedInUser: (contextSetter) => {
         axios.get('/api/authenticated-only')
         .then((response) => {
-            localStorage.setItem(localStorageKey, JSON.stringify(response.data));
+            setLocalStorageUserInfo(response.data);
             contextSetter({isLoggedIn: response.data.success});
         })
         .catch((error) => {
-            localStorage.setItem(localStorageKey, "{}");
+            setLocalStorageUserInfo({});
         });
     },
     checkIfLoggedInAdmin: (contextSetter) => {
         axios.get('/api/admin-only')
         .then((response) => {
-            localStorage.setItem(localStorageKey, JSON.stringify(response.data));
-            contextSetter(response);
+            setLocalStorageUserInfo(response.data);
+            contextSetter(response.data);
         })
         .catch((error) => {
-            localStorage.setItem(localStorageKey, "{}");
+            setLocalStorageUserInfo({});
         });
     },
+    getRole: () => {
+        let userInfo = getLocalStorageUserInfo();
+        return userInfo.role;
+    },
     isLoggedIn: () => {
-        let userInfo = localStorage.getItem(localStorageKey) || '{}';
-        userInfo = JSON.parse(userInfo);
+        let userInfo = getLocalStorageUserInfo();
         return userInfo.success === true;
     }
 }
