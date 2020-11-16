@@ -55,7 +55,7 @@ export default function ProfilePage(props) {
                     </div>
                     <div className="form-group">
                         <h3 className="mb-0 mt-5">Change Name</h3>
-                        <label>New username:</label>
+                        <label>New name:</label>
                         <input
                             type="text"
                             style={{
