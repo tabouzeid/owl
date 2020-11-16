@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Form} from "react-bootstrap";
 import axios from 'axios';
 import SeriesCard from "../SeriesCard";
 
@@ -96,15 +95,15 @@ function SearchPage() {
             <div className="container">
                 <div className="row">
                     <div className="col d-flex justify-content-center align-items-center mt-3 mb-5">
-                        <Form className="form-inline my-2 my-lg-0" onSubmit={handleSubmit}>
-                            <Form.Control as="select" id="search_site" onChange={handleSiteChange} name='site_selected' className="mr-sm-2">
+                        <form className="form-inline my-2 my-lg-0" onSubmit={handleSubmit}>
+                            <select class="form-control mr-sm-2" id="search_site" onChange={handleSiteChange} name='site_selected'>
                                 {siteList.map((siteInList, index) => <option key={siteInList.id} value={index}>{siteInList.siteName}</option>)}
-                            </Form.Control>
-                            <Form.Control as={"input"} id="search_field" name="search_field" value={searchString} onChange={handleSearchStringChange} className="mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                            <Button variant={"success"} id="search_button" className="my-2 my-sm-0" type="submit">
+                            </select>
+                            <input type="input" className="form-control mr-sm-2" id="search_field" name="search_field" value={searchString} onChange={handleSearchStringChange} type="search" placeholder="Search" aria-label="Search"/>
+                            <button type="button" className="btn btn-success my-2 my-sm-0" id="search_button" type="submit">
                                 Search
-                            </Button>
-                        </Form>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
