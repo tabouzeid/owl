@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardDeck } from "react-bootstrap";
 import SeriesCard from "../SeriesCard";
 import axios from "axios";
 
@@ -31,8 +30,8 @@ function SiteCard(props) {
     const allSelected = !unreadFlag ? "active" : "";
 
     return (
-        <Card style={{ marginTop: "20px", padding: "0px", width: 'auto' }}>
-            <Card.Header className="d-flex">
+        <div className="card" style={{ marginTop: "20px", padding: "0px", width: 'auto' }}>
+            <div className="card-header d-flex">
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-4">
@@ -54,11 +53,11 @@ function SiteCard(props) {
                         </div>
                     </div>
                 </div>
-            </Card.Header>
-            <Card.Body>
+            </div>
+            <div className="card-body">
                 <div className="container">
                     <div className="row">
-                        <CardDeck>
+                        <div className="card-deck">
                             {seriesList
                                 .filter((series) => {
                                     return series.seriesSiteId === props.site.id && series.hasUpdate === unreadFlag;
@@ -67,11 +66,11 @@ function SiteCard(props) {
                                     <SeriesCard key={series.id} series={series} site={props.site} buttonText="Remove" buttonColor="danger" buttonClickAction={deleteSeries} />
                                 )
                             }
-                        </CardDeck>
+                        </div>
                     </div>
                 </div>
-            </Card.Body>
-        </Card>
+            </div>
+        </div>
     );
 }
 
