@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { Redirect } from 'react-router';
 import axios from "axios";
+
+const API = require("../../util/API");
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -18,6 +21,10 @@ export default function LoginPage() {
                 alert("I'm sorry, we have encountered an error with your Login submission.");
                 // event.target.reset();
             })
+    }
+
+    if (API.isLoggedIn()) {
+        return <Redirect to='/updates' />;        
     }
 
     return (

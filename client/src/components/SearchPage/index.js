@@ -96,11 +96,11 @@ function SearchPage() {
                 <div className="row">
                     <div className="col d-flex justify-content-center align-items-center mt-3 mb-5">
                         <form className="form-inline my-2 my-lg-0" onSubmit={handleSubmit}>
-                            <select class="form-control mr-sm-2" id="search_site" onChange={handleSiteChange} name='site_selected'>
+                            <select className="form-control mr-sm-2" id="search_site" onChange={handleSiteChange} name='site_selected'>
                                 {siteList.map((siteInList, index) => <option key={siteInList.id} value={index}>{siteInList.siteName}</option>)}
                             </select>
-                            <input type="input" className="form-control mr-sm-2" id="search_field" name="search_field" value={searchString} onChange={handleSearchStringChange} type="search" placeholder="Search" aria-label="Search"/>
-                            <button type="button" className="btn btn-success my-2 my-sm-0" id="search_button" type="submit">
+                            <input type="search" className="form-control mr-sm-2" id="search_field" name="search_field" value={searchString} onChange={handleSearchStringChange} placeholder="Search" aria-label="Search"/>
+                            <button className="btn btn-success my-2 my-sm-0" id="search_button" type="submit">
                                 Search
                             </button>
                         </form>

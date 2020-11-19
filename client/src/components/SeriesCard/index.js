@@ -30,7 +30,7 @@ function SeriesCard(props) {
                 <div className="card-body">
                     <div className="card-title trunc" style={{textTransform: "capitalize"}}>{seriesName}</div>
                     <a href={seriesUrl} rel="noopener noreferrer" target="_blank">
-                        <img src={imageUrl} onClick={markSeriesViewed} className="mr-3 rounded card-img img-thumbnail" style={{width:'auto', height:'250px'}}/>
+                        <img src={imageUrl} onClick={markSeriesViewed} alt="seriesImage" className="mr-3 rounded card-img img-thumbnail" style={{width:'auto', height:'250px'}}/>
                     </a>
                 </div>
                 <div className="card-footer">
