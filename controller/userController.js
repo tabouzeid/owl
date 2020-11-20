@@ -1,5 +1,5 @@
 const db = require("../models");
-const { ROLES } = require("../config/middleware/roles");
+const ROLES  = require("../config/middleware/roles");
 const bcrypt = require("bcryptjs");
 
 module.exports = {

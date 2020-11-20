@@ -16,10 +16,8 @@ export default function PrivateRouteForRoles(props) {
     }
 
     if(isLoggedIn && roleMatch){
-        console.log("routing");
         return (<Route path={path} component={component} />);
     } else {
-        console.log("redirecting");
         return (<Redirect to={redirectPath} />);
     }
 }
