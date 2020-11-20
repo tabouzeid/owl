@@ -7,6 +7,7 @@ const API = require("../../util/API");
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoggedIn, setIsLoggedIn] = useState(API.isLoggedIn());
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -15,15 +16,18 @@ export default function LoginPage() {
             password: password
         })
             .then((response) => {
+                setIsLoggedIn(response.data.success);
                 window.location.reload(false);
+                
             })
             .catch(error => {
+                setIsLoggedIn(false);
                 alert("I'm sorry, we have encountered an error with your Login submission.");
                 // event.target.reset();
             })
     }
 
-    if (API.isLoggedIn()) {
+    if (isLoggedIn) {
         return <Redirect to='/updates' />;        
     }
 
