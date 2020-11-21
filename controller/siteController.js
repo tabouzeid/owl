@@ -18,11 +18,15 @@ module.exports = {
     },
     findAll: (req, res) => {
         db.SeriesSite
-            .findAll()
+            .findAll({
+                raw: true,
+            })
             .then((updateResp) => {
+                console.log(updateResp);
                 res.json(updateResp);
             })
             .catch((err) => {
+                console.log(err);
                 res.status(422).json(err);
             });
     },

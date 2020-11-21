@@ -35,7 +35,7 @@ module.exports = function (app) {
     });
 
     app.get('/api/authenticated-only', AccessMiddleware.hasAccess, (req, res) => {
-        res.json({ success: true, message: 'You have auth access!' })
+        res.json({ success: true, role: req.user.role, name: req.user.name, message: 'You have auth access!' })
     })
 
     app.get('/api/admin-only', AccessMiddleware.hasAdminAccess, (req, res) => {

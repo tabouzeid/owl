@@ -44,6 +44,7 @@ function getLoggedInList(handleLogout) {
 
             <div className="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4" style={{ zIndex: "0" }}>
                 <a className="nav-link text-body" href="/profile">Profile</a>
+                <a className="nav-link text-body" href="/sites">Sites</a>
                 <a className="nav-link text-body" href="#" onClick={handleLogout}>Logout</a>
             </div>
         </li>

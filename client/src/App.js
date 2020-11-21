@@ -5,6 +5,7 @@ import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/LoginPage";
 import PrivateRouteForRoles from "./components/PrivateRouteForRoles"
 import ProfilePage from "./components/ProfilePage";
+import SiteListPage from "./components/SiteListPage";
 import SearchPage from "./components/SearchPage";
 import SignupPage from "./components/SignupPage";
 import UpdatePage from "./components/UpdatePage";
@@ -29,11 +30,12 @@ function App() {
                 <AppNaviBar />
                 <Switch>
                     <Route path="/" component={LandingPage} exact />
+                    <PublicRoute path="/login" component={LoginPage} exact />
+                    <PublicRoute path="/signup" component={SignupPage} exact />
                     <PrivateRouteForRoles path="/updates" component={UpdatePage} redirectPath="/login" exact/>
                     <PrivateRouteForRoles path="/search" component={SearchPage} redirectPath="/login" exact />
                     <PrivateRouteForRoles path="/profile" component={ProfilePage} redirectPath="/login" exact />
-                    <PublicRoute path="/login" component={LoginPage} exact />
-                    <PublicRoute path="/signup" component={SignupPage} exact />
+                    <PrivateRouteForRoles path="/sites" component={SiteListPage} roles={['admin']} redirectPath="/login" exact />
                 </Switch>
             </Router>
         </UserSeriesContext.Provider>
