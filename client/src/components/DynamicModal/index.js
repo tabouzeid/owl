@@ -25,7 +25,8 @@ export default function DynamicModal(props) {
     
     const onSubmit = (event) => {
         event.preventDefault();
-        onSave(event);
+        site.id = props.site.id;
+        onSave(site);
     }
 
     useEffect(()=>{

@@ -34,6 +34,14 @@ module.exports = function(app) {
     app.get('/api/site', AccessMiddleware.hasAccess, (req, res) => {
         siteController.findAll(req, res);
     });
+
+    app.put('/api/site', AccessMiddleware.hasAccess, (req, res) => {
+        siteController.updateSite(req, res);
+    });
+
+    app.delete('/api/site/:id', AccessMiddleware.hasAccess, (req, res) => {
+        siteController.removeSite(req, res);
+    });
     
     app.post('/api/series', AccessMiddleware.hasAccess, (req, res) => {
         seriesController.createSeries(req, res);

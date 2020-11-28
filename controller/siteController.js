@@ -44,8 +44,17 @@ module.exports = {
                 where: {id: req.params.id},
                 raw: true,
             })
-            .then((updateResp) => {
-                res.json(updateResp);
+            .then((deleteResp) => {
+                db.SeriesSite
+                .findAll({
+                    raw: true,
+                })
+                .then((updateResp) => {
+                    res.json(updateResp);
+                })
+            .catch((err) => {
+                res.status(422).json(err);
+            });
             })
             .catch((err) => {
                 res.status(422).json(err);
@@ -53,14 +62,25 @@ module.exports = {
     },
     updateSite: (req, res) => {
         db.SeriesSite
-            .update({
-                where: {id: req.params.id},
+            .update(req.body,
+            {
+                where: {id: req.body.id},
                 raw: true,
-            }, req.body)
+            })
             .then((updateResp) => {
-                res.json(updateResp);
+                db.SeriesSite
+                .findAll({
+                    raw: true,
+                })
+                .then((getResp) => {
+                    res.json(getResp);
+                })
+                .catch((err) => {
+                    res.status(422).json(err);
+                });
             })
             .catch((err) => {
+                console.log(err);
                 res.status(422).json(err);
             });
     },
