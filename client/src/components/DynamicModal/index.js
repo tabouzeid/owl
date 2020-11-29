@@ -3,16 +3,6 @@ import React, { useEffect, useState } from 'react';
 export default function DynamicModal(props) {
     const modalName = props.modalName;
     const onSave = props.submitFunc;
-    // const [site, setSite] = useState(
-    //     {
-    //         siteName: "",
-    //         dateClassSelectionQuery: "",
-    //         siteUrl: "",
-    //         searchUrlTemplate: "",
-    //         seriesUrlTemplate: "",
-    //     }
-    // );
-    
     const [site, setSite] = useState(
         {
             siteName: "", 
@@ -24,20 +14,30 @@ export default function DynamicModal(props) {
     );
     
     const onSubmit = (event) => {
-        event.preventDefault();
-        site.id = props.site.id;
         onSave(site);
     }
 
     useEffect(()=>{
-        if(props.site) {   
+        if(props.site) {
             setSite(
                 {
+                    id: props.site.id,
                     siteName: props.site.siteName, 
                     dateClassSelectionQuery: props.site.dateClassSelectionQuery, 
                     siteUrl: props.site.siteUrl, 
                     searchUrlTemplate: props.site.searchUrlTemplate, 
                     seriesUrlTemplate: props.site.seriesUrlTemplate
+                }
+            );
+        } else {
+            setSite(
+                {
+                    id: -1,
+                    siteName: "", 
+                    dateClassSelectionQuery: "", 
+                    siteUrl: "", 
+                    searchUrlTemplate: "", 
+                    seriesUrlTemplate: ""
                 }
             );
         }
@@ -47,7 +47,7 @@ export default function DynamicModal(props) {
         site[event.target.name] = event.target.value;
         setSite({...site});
     }
-    
+
     return (
             <div className="modal fade" id={modalName} tabIndex="-1" aria-labelledby={modalName+"Label"} aria-hidden="true">
                 <div className="modal-dialog">
@@ -112,7 +112,7 @@ export default function DynamicModal(props) {
                                            value={site.seriesUrlTemplate} 
                                            aria-describedby="SeriesUrlTemplate" /> 
                                 </div>
-                                <button type="submit" className="btn btn-primary">Save</button>
+                                <button type="submit" className="btn btn-primary">{props.buttonText}</button>
                             </form>
                         </div>
                     </div>
