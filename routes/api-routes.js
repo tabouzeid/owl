@@ -67,10 +67,10 @@ module.exports = function(app) {
         seriesController.findByUser(req, res);
     });
 
-    app.get('/api/series/updates', AccessMiddleware.hasAccess, (req, res) => {
+    app.get('/api/series/updates/:id', AccessMiddleware.hasAccess, (req, res) => {
         db.Series.findAll(
             {
-                where: { userId: req.user.id },
+                where: { userId: req.user.id,  seriesSiteId: req.params.id},
                 raw: true,
                 include: [db.SeriesSite]
             }

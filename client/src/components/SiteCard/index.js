@@ -3,7 +3,7 @@ import SeriesCard from "../SeriesCard";
 import axios from "axios";
 
 function SiteCard(props) {
-    const [seriesList, setSeriesList] = useState([]);
+    const [seriesList, setSeriesList] = useState();
     const [unreadFlag, setUnreadFlag] = useState(true);
 
     const deleteSeries = (event) => {
@@ -20,7 +20,7 @@ function SiteCard(props) {
     }
 
     useEffect(() => {
-        axios.get('/api/series/updates')
+        axios.get('/api/series/updates/'+props.site.id)
             .then((resp) => {
                 setSeriesList(resp.data);
             })
@@ -36,7 +36,7 @@ function SiteCard(props) {
                     <div className="row">
                         <div className="col-4">
                             {props.site.siteName}
-                            {seriesList.length === 0 ? <div className="spinner-border spinner-border-sm text-primary ml-2" role="status">
+                            {!seriesList ? <div className="spinner-border spinner-border-sm text-primary ml-2" role="status">
                                 <span className="sr-only">Loading...</span>
                             </div> : ""}
                         </div>
@@ -58,13 +58,14 @@ function SiteCard(props) {
                 <div className="container">
                     <div className="row">
                         <div className="card-deck">
-                            {seriesList
+                            {seriesList ? seriesList
                                 .filter((series) => {
                                     return series.seriesSiteId === props.site.id && series.hasUpdate === unreadFlag;
                                 }
                                 ).map((series) =>
                                     <SeriesCard key={series.id} series={series} site={props.site} buttonText="Remove" buttonColor="danger" buttonClickAction={deleteSeries} />
                                 )
+                                : []
                             }
                         </div>
                     </div>
