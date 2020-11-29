@@ -32,7 +32,13 @@ module.exports = {
         db.SeriesSite
             .create(req.body)
             .then((updateResp) => {
-                res.json(updateResp);
+                db.SeriesSite
+                .findAll({
+                    raw: true,
+                })
+                .then((updateResp) => {
+                    res.json(updateResp);
+                })
             })
             .catch((err) => {
                 res.status(422).json(err);

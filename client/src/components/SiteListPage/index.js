@@ -39,8 +39,15 @@ export default function SiteListPage() {
         });
     }
 
-    const addSite = (event) => {
-        console.log("add");
+    const addSite = (siteData) => {
+        siteData.id = '';
+        axios.post('/api/site', siteData)
+        .then((response) => {
+            setSites(response.data);
+        })
+        .catch((error) => {
+            alert("An error occurred while adding a site.");
+        });
     }
 
     return (

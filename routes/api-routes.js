@@ -31,15 +31,19 @@ module.exports = function(app) {
         userController.updateUser(req, res);
     });
 
-    app.get('/api/site', AccessMiddleware.hasAccess, (req, res) => {
+    app.get('/api/site', AccessMiddleware.hasAdminAccess, (req, res) => {
         siteController.findAll(req, res);
     });
 
-    app.put('/api/site', AccessMiddleware.hasAccess, (req, res) => {
+    app.post('/api/site', AccessMiddleware.hasAdminAccess, (req, res) => {
+        siteController.createSite(req, res);
+    });
+
+    app.put('/api/site', AccessMiddleware.hasAdminAccess, (req, res) => {
         siteController.updateSite(req, res);
     });
 
-    app.delete('/api/site/:id', AccessMiddleware.hasAccess, (req, res) => {
+    app.delete('/api/site/:id', AccessMiddleware.hasAdminAccess, (req, res) => {
         siteController.removeSite(req, res);
     });
     
