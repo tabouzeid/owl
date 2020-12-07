@@ -31,7 +31,7 @@ module.exports = function(app) {
         userController.updateUser(req, res);
     });
 
-    app.get('/api/site', AccessMiddleware.hasAdminAccess, (req, res) => {
+    app.get('/api/site', AccessMiddleware.hasAccess, (req, res) => {
         siteController.findAll(req, res);
     });
 
