@@ -16,14 +16,13 @@ export default function LoginPage() {
             password: password
         })
             .then((response) => {
+                API.setIsLoggedIn(response.data.success);
                 setIsLoggedIn(response.data.success);
                 window.location.reload(false);
-                
             })
             .catch(error => {
                 setIsLoggedIn(false);
                 alert("I'm sorry, we have encountered an error with your Login submission.");
-                // event.target.reset();
             })
     }
 

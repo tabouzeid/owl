@@ -36,6 +36,11 @@ module.exports = {
         let userInfo = getLocalStorageUserInfo();
         return userInfo.role;
     },
+    setIsLoggedIn: (loggedInOrNot) => {
+        let userInfo = getLocalStorageUserInfo();
+        userInfo.success = loggedInOrNot;
+        setLocalStorageUserInfo(userInfo);
+    },
     isLoggedIn: () => {
         let userInfo = getLocalStorageUserInfo();
         return userInfo.success === true;
