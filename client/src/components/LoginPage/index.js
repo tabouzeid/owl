@@ -21,6 +21,7 @@ export default function LoginPage() {
                 window.location.reload(false);
             })
             .catch(error => {
+                API.setIsLoggedIn(false);
                 setIsLoggedIn(false);
                 alert("I'm sorry, we have encountered an error with your Login submission.");
             })
