@@ -8,6 +8,7 @@ const express = require("express");
 const passport = require('passport');
 const path = require('path');
 const session = require('express-session');
+const SessionStore = require('express-session-sequelize')(session.Store);
 
 // Sets up the Express App
 // =============================================================
@@ -16,6 +17,9 @@ const PORT = process.env.PORT || 8080;
 
 // Requiring our models for syncing
 const db = require("./models");
+const sequelizeSessionStore = new SessionStore({
+    db: db.sequelize,
+});
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -23,7 +27,7 @@ app.use(express.json());
 app.use(express.static("client/build"));
 
 // We need to use sessions to keep track of our user's login status
-app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+app.use(session({ secret: "keyboard cat", store: sequelizeSessionStore, resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
