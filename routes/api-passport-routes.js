@@ -9,20 +9,20 @@ module.exports = function (app) {
         const { email, password } = req.body
         if (!email || !password) {
             res.status(400).json({ success: false, msg: 'Invalid credentials' });
+        } else {
+            // Authenticate the user using the credentials provided
+            passport.authenticate('local', { session: true }, function (err, user) {
+                if (err || user === false) {
+                    res.status(400).json({ success: false, msg: 'Invalid credentials' });
+                } else {
+                    // When using passport with callback, we have to manually call req.login to set the Cookie
+                    req.login(user, () => {
+                        res.json({ success: true, user })
+                    })
+                }
+    
+            })(req, res, next)
         }
-
-        // Authenticate the user using the credentials provided
-        passport.authenticate('local', { session: true }, function (err, user) {
-            if (err) {
-                console.log(err)
-                res.status(400).json({ success: false, msg: 'Invalid credentials' });
-            }
-
-            // When using passport with callback, we have to manually call req.login to set the Cookie
-            req.login(user, () => {
-                res.json({ success: true, user })
-            })
-        })(req, res, next)
     })
 
     app.post("/api/signup", function (req, res) {
