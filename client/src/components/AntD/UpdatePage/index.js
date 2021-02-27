@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Table, Switch, Form, Space} from 'antd';
+import { DeleteTwoTone } from '@ant-design/icons';
 import axios from "axios";
 
 export default function UpdatePage () {
@@ -50,7 +51,8 @@ export default function UpdatePage () {
             key: 'id',
             render: (text, record) => (
               <Space size="middle">
-                <a onClick={deleteSeries} data-id={record.id}>Remove</a>
+                <DeleteTwoTone onClick={deleteSeries} data-id={record.id} style={{fontSize:"20px"}} twoToneColor="#eb2f96" />
+                {/* <a onClick={deleteSeries} data-id={record.id} href="#">Remove</a> */}
               </Space>
             ),
         },
@@ -99,6 +101,7 @@ export default function UpdatePage () {
                     <Table 
                         columns={columns}
                         rowKey={record => record.id} 
+                        loading={seriesListWithUpdates.length === 0}
                         dataSource={seriesListWithUpdates.filter((series) => series.hasUpdate === true || hideRead === false)} />
                 </div>
             </div>
