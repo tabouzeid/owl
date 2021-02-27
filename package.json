@@ -23,6 +23,7 @@
   "author": "Taher Abouzeid",
   "license": "ISC",
   "dependencies": {
+    "antd": "^4.12.3",
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.3",

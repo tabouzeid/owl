@@ -67,6 +67,21 @@ module.exports = function(app) {
         seriesController.findByUser(req, res);
     });
 
+    app.get('/api/series/updates', AccessMiddleware.hasAccess, (req, res) => {
+        db.Series.findAll(
+            {
+                where: { userId: req.user.id},
+                raw: true,
+                include: [db.SeriesSite]
+            }
+        ).then(async (seriesList)  => {
+            getUpdatesForSeriesList(seriesList, req, res);
+        }).catch((err) => {
+            console.log(err);
+            res.status(422).json(err);
+        })
+    });
+
     app.get('/api/series/updates/:id', AccessMiddleware.hasAccess, (req, res) => {
         db.Series.findAll(
             {
@@ -75,28 +90,7 @@ module.exports = function(app) {
                 include: [db.SeriesSite]
             }
         ).then(async (seriesList)  => {
-            for (const series of seriesList) {
-                const seriesUrl = series['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', series.seriesIdOnSite);
-                const seriesLastChecked = DateTime.fromJSDate(series.lastChecked);
-                const seriesInfoOnSite =  await axios.get(seriesUrl,
-                    {
-                        headers: {
-                            accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-                        }
-                    }
-                )
-                const $ = cheerio.load(seriesInfoOnSite.data);
-                const dates = $(".chapter-time");
-                let hasUpdate = false;
-                dates.each((index, date) => {
-                    let currDate = parseDate($(date).text().trim())
-                    if(currDate > seriesLastChecked){
-                        hasUpdate = true;
-                    }
-                });
-                series.hasUpdate = hasUpdate;
-            }
-            res.json(seriesList);
+            getUpdatesForSeriesList(seriesList, req, res);
         }).catch((err) => {
             console.log(err);
             res.status(422).json(err);
@@ -123,5 +117,30 @@ module.exports = function(app) {
         }
 
         return result;
+    }
+
+    async function getUpdatesForSeriesList(seriesList, req, res) {
+        for (const series of seriesList) {
+            const seriesUrl = series['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', series.seriesIdOnSite);
+            const seriesLastChecked = DateTime.fromJSDate(series.lastChecked);
+            const seriesInfoOnSite =  await axios.get(seriesUrl,
+                {
+                    headers: {
+                        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+                    }
+                }
+            )
+            const $ = cheerio.load(seriesInfoOnSite.data);
+            const dates = $(".chapter-time");
+            let hasUpdate = false;
+            dates.each((index, date) => {
+                let currDate = parseDate($(date).text().trim())
+                if(currDate > seriesLastChecked){
+                    hasUpdate = true;
+                }
+            });
+            series.hasUpdate = hasUpdate;
+        }
+        res.json(seriesList);
     }
 };

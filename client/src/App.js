@@ -8,7 +8,7 @@ import ProfilePage from "./components/ProfilePage";
 import SiteListPage from "./components/SiteListPage";
 import SearchPage from "./components/SearchPage";
 import SignupPage from "./components/SignupPage";
-import UpdatePage from "./components/UpdatePage";
+import UpdatePage from "./components/AntD/UpdatePage";
 import UserSeriesContext from "./util/UserSeriesContext";
 import './App.css';
 import PublicRoute from './components/PublicRoute';
