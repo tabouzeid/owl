@@ -10,7 +10,6 @@ export default function UpdatePage () {
     useEffect(() => {
         axios.get('/api/series/updates')
             .then((resp) => {
-                console.log(resp);
                 const sorted = resp.data.sort(function(a, b) {
                     var nameA = a.seriesName.toUpperCase(); // ignore upper and lowercase
                     var nameB = b.seriesName.toUpperCase(); // ignore upper and lowercase
@@ -24,7 +23,7 @@ export default function UpdatePage () {
                     // names must be equal
                     return 0;
                 });
-                setSeriesListWithUpdates(resp.data);
+                setSeriesListWithUpdates(sorted);
             })
     }, [])
       
@@ -33,7 +32,7 @@ export default function UpdatePage () {
             title: 'Series Image',
             dataIndex: 'seriesImageUrl',
             key: 'id',
-            render: (theImageURL, record) => <a rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><img alt="Series Image" src={theImageURL} width="50"/></a>,
+            render: (theImageURL, record) => <a rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><img alt="Series Cover" src={theImageURL} width="50"/></a>,
         },
         {
             title: 'Series Name',
