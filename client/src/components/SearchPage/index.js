@@ -73,8 +73,8 @@ function SearchPage() {
                     const results = [];
                     let jsonResult = response.data;
                     for (let i = 0; i < jsonResult.length; i++) {
-                        jsonResult[i].name = jsonResult[i].name.toLowerCase().replace('<span style="color: #ff530d;font-weight: bold;">', '');
-                        jsonResult[i].name = jsonResult[i].name.replace('</span>', '');
+                        jsonResult[i].name = jsonResult[i].name.toLowerCase().replace(/(<([^>]+)>)/gi, "");
+                        jsonResult[i].name = jsonResult[i].name.split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
                         results.push({
                             seriesIdOnSite: jsonResult[i].id_encode,
                             seriesName: jsonResult[i].name,
