@@ -5,7 +5,8 @@ const cheerio = require("cheerio");
 const bcrypt = require("bcryptjs");
 const {DateTime} = require("luxon");
 
-const db = require("../models")
+const db = require("../models");
+const chapterParser = require("./seriesInfoParser");
 const AccessMiddleware = require("../config/middleware/isAuthenticated");
 const seriesController = require('../controller/seriesController');
 const siteController = require('../controller/siteController');
@@ -122,6 +123,9 @@ module.exports = function(app) {
     async function getUpdatesForSeriesList(seriesList, req, res) {
         for (const series of seriesList) {
             const seriesUrl = series['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', series.seriesIdOnSite);
+            console.log(seriesUrl);
+            const latestChapter = await chapterParser.getLatestManganeloChapter(seriesUrl);
+            console.log(latestChapter);
             const seriesLastChecked = DateTime.fromJSDate(series.lastChecked);
             const seriesInfoOnSite =  await axios.get(seriesUrl,
                 {
