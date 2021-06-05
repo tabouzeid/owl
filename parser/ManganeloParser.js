@@ -31,5 +31,28 @@ async function getLatestManganeloChapter(seriesUrl) {
     return chapterNumber;
 }
 
+function parseDate(dateString) {
+    let result;
+    if(dateString.endsWith(" ago")){
+        let num = dateString.slice(0, dateString.indexOf(" "));
+        if(dateString.endsWith(" hrs ago") || dateString.endsWith(" hours ago") || dateString.endsWith(" hour ago")){
+            result =  DateTime.local().minus({hours: num});
+        } else if(dateString.endsWith(" mins ago") || dateString.endsWith(" minutes ago")){
+            result =  DateTime.local().minus({minutes: num});
+        } else if(dateString.endsWith(" days ago") || dateString.endsWith(" day ago")){
+            result =  DateTime.local().minus({days: num});
+        } else {
+            result =  DateTime.local();
+        }
+    }  else {
+        result = DateTime.fromFormat(dateString, "MMM dd,yy");
+    }
 
-module.exports = {getLatestManganeloChapter};
+    return result;
+}
+
+
+module.exports = {
+    getLatestManganeloChapter: getLatestManganeloChapter,
+    parseDate: parseDate
+};

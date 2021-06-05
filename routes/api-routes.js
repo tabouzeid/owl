@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const {DateTime} = require("luxon");
 
 const db = require("../models");
-const chapterParser = require("./seriesInfoParser");
+const manganeloParser = require("../parser/ManganeloParser");
 const AccessMiddleware = require("../config/middleware/isAuthenticated");
 const seriesController = require('../controller/seriesController');
 const siteController = require('../controller/siteController');
@@ -100,32 +100,10 @@ module.exports = function(app) {
 
     //////////////////////
 
-    function parseDate(dateString) {
-        let result;
-        if(dateString.endsWith(" ago")){
-            let num = dateString.slice(0, dateString.indexOf(" "));
-            if(dateString.endsWith(" hrs ago") || dateString.endsWith(" hours ago") || dateString.endsWith(" hour ago")){
-                result =  DateTime.local().minus({hours: num});
-            } else if(dateString.endsWith(" mins ago") || dateString.endsWith(" minutes ago")){
-                result =  DateTime.local().minus({minutes: num});
-            } else if(dateString.endsWith(" days ago") || dateString.endsWith(" day ago")){
-                result =  DateTime.local().minus({days: num});
-            } else {
-                result =  DateTime.local();
-            }
-        }  else {
-            result = DateTime.fromFormat(dateString, "MMM dd,yy");
-        }
-
-        return result;
-    }
-
     async function getUpdatesForSeriesList(seriesList, req, res) {
         for (const series of seriesList) {
             const seriesUrl = series['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', series.seriesIdOnSite);
-            console.log(seriesUrl);
-            const latestChapter = await chapterParser.getLatestManganeloChapter(seriesUrl);
-            console.log(latestChapter);
+            const latestChapter = await manganeloParser.getLatestManganeloChapter(seriesUrl);
             const seriesLastChecked = DateTime.fromJSDate(series.lastChecked);
             const seriesInfoOnSite =  await axios.get(seriesUrl,
                 {
@@ -138,7 +116,7 @@ module.exports = function(app) {
             const dates = $(".chapter-time");
             let hasUpdate = false;
             dates.each((index, date) => {
-                let currDate = parseDate($(date).text().trim())
+                let currDate = manganeloParser.parseDate($(date).text().trim())
                 if(currDate > seriesLastChecked){
                     hasUpdate = true;
                 }
