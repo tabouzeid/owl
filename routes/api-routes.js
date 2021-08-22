@@ -122,6 +122,7 @@ module.exports = function(app) {
                 }
             });
             series.hasUpdate = hasUpdate;
+            series.latestChapter = latestChapter;
         }
         res.json(seriesList);
     }

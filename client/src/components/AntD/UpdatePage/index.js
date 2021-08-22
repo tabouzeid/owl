@@ -41,10 +41,16 @@ export default function UpdatePage () {
             render: (theSeriesName, record) => <a onClick={markSeriesViewed} data-id={record.id} rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><span style={record.hasUpdate ? {fontWeight: 'bold'} : {}}>{theSeriesName}</span></a>,
         },
         {
+            title: 'Chapter',
+            dataIndex: 'latestChapter',
+            key: 'id',
+        },
+        {
             title: 'Site',
             dataIndex: 'SeriesSite.siteName',
             key: 'id',
         },
+        
         {
             title: 'Action',
             key: 'id',
