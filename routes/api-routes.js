@@ -52,6 +52,24 @@ module.exports = function(app) {
         seriesController.createSeries(req, res);
     });
 
+    app.get('/api/series/:id', AccessMiddleware.hasAccess, (req, res) => {
+        db.Series.findAll(
+            {
+                where: { 
+                    id: req.params.id,
+                    userId: req.user.id
+                },
+                raw: true,
+                include: [db.SeriesSite]
+            }
+        ).then(async (seriesList)  => {
+            getUpdatesForSeriesList(seriesList, req, res);
+        }).catch((err) => {
+            console.log(err);
+            res.status(422).json(err);
+        })
+    });
+
     app.put('/api/series', AccessMiddleware.hasAccess, (req, res) => {
         seriesController.updateSeries(req, res);
     });
@@ -61,6 +79,7 @@ module.exports = function(app) {
     });
 
     app.put('/api/series/:id/mark_last_checked', AccessMiddleware.hasAccess, (req, res) => {
+        console.log(req.body);
         seriesController.markSeriesChecked(req, res);
     });
 
