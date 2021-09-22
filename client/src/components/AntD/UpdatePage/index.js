@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Table, Switch, Form, Space} from 'antd';
-import { DeleteTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone, SyncOutlined } from '@ant-design/icons';
 import axios from "axios";
 
 export default function UpdatePage () {
@@ -15,7 +15,6 @@ export default function UpdatePage () {
                         setSeriesListWithUpdates(currentSeriesList => {
                             const tmp = [...currentSeriesList];
                             tmp.push(updatedSeriesInfo.data[0]);
-                            console.log("currentSeries ", tmp);
                             return sortSeries(tmp);
                         });
                     })
@@ -34,7 +33,7 @@ export default function UpdatePage () {
             title: 'Series Name',
             dataIndex: 'seriesName',
             key: 'seriesName',
-            render: (theSeriesName, record) => <a onClick={markSeriesViewed} data-id={record.id} rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><span style={record.hasUpdate ? {fontWeight: 'bold'} : {}}>{theSeriesName}</span></a>,
+            render: (theSeriesName, record) => <a onClick={markSeriesViewed} data-id={record.id} data-chapterNumber={record.latestChapter} rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><span style={record.hasUpdate ? {fontWeight: 'bold'} : {}}>{theSeriesName}</span></a>,
         },
         {
             title: 'Chapter',
@@ -51,8 +50,8 @@ export default function UpdatePage () {
             key: 'action',
             render: (text, record) => (
               <Space size="middle">
+                <SyncOutlined data-id={record.id} spin={record['hasUpdate']===undefined} twoToneColor="#eb2f96" /> 
                 <DeleteTwoTone onClick={deleteSeries} data-id={record.id} style={{fontSize:"20px"}} twoToneColor="#eb2f96" />
-                {/* <a onClick={deleteSeries} data-id={record.id} href="#">Remove</a> */}
               </Space>
             ),
         },
@@ -81,18 +80,11 @@ export default function UpdatePage () {
 
     const markSeriesViewed = (e) => {
         const seriesId = e.currentTarget.dataset.id;
-        const chapterNumber = e.currentTarget.dataset.chapterNumber;
+        const chapterNumber = e.currentTarget.dataset.chapternumber;
+        const body = { lastChapter: chapterNumber };
         if (seriesId){
-            let details  = {
-                latestChapter: chapterNumber,
-            }
-            console.log("hello  "  + JSON.stringify(details));
-            axios.put(`/api/series/${seriesId}/mark_last_checked`, details, {
-                headers: {
-                  'Content-Type': "application/json"
-                }
-              });
-            const seriesIndex = seriesListWithUpdates.findIndex((series) => series.id == seriesId);
+            axios.put(`/api/series/${seriesId}/mark_last_checked`, body);
+            const seriesIndex = seriesListWithUpdates.findIndex((series) => series.id === seriesId);
             if(seriesIndex >= 0){
                 const tmp = [...seriesListWithUpdates];
                 tmp[seriesIndex].hasUpdate = false;

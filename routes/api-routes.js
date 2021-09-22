@@ -79,7 +79,6 @@ module.exports = function(app) {
     });
 
     app.put('/api/series/:id/mark_last_checked', AccessMiddleware.hasAccess, (req, res) => {
-        console.log(req.body);
         seriesController.markSeriesChecked(req, res);
     });
 
@@ -94,8 +93,9 @@ module.exports = function(app) {
                 raw: true,
                 include: [db.SeriesSite]
             }
-        ).then(async (seriesList)  => {
-            getUpdatesForSeriesList(seriesList, req, res);
+        ).then((seriesList)  => {
+            res.json(seriesList);
+            // getUpdatesForSeriesList(seriesList, req, res);
         }).catch((err) => {
             console.log(err);
             res.status(422).json(err);
@@ -141,6 +141,7 @@ module.exports = function(app) {
                 }
             });
             series.hasUpdate = hasUpdate;
+            series.latestChapter = latestChapter; 
         }
         res.json(seriesList);
     }
