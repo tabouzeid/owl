@@ -13,6 +13,13 @@ module.exports = function (sequelize, DataTypes) {
                 len: [1],
             },
         },
+        siteFaviconUrl: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                len: [1],
+            },
+        },
         dateClassSelectionQuery: {
             type: DataTypes.STRING,
             allowNull: false,
