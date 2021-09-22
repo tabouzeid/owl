@@ -109,7 +109,8 @@ module.exports = {
         db.Series
             .update(
                 {
-                    lastChecked: new Date()
+                    lastChecked: new Date(),
+                    lastChapterViewed: req.body.lastChapter
                 }, 
                 {
                     where: {

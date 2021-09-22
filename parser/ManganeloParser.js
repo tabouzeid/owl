@@ -1,5 +1,6 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
+const {DateTime} = require("luxon");
 
 
 async function getLatestManganeloChapter(seriesUrl) {
@@ -22,7 +23,6 @@ async function getLatestManganeloChapter(seriesUrl) {
             if(chapterNum) {
                 let tmp = parseFloat(chapterNum[chapterNum.length-1]);
                 if(tmp > chapterNumber) {
-                    console.log(name);
                     chapterNumber = tmp;
                 }
             }
