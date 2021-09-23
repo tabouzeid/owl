@@ -50,7 +50,7 @@ export default function UpdatePage () {
             key: 'action',
             render: (text, record) => (
               <Space size="middle">
-                <SyncOutlined data-id={record.id} spin={record['hasUpdate']===undefined} twoToneColor="#eb2f96" /> 
+                <SyncOutlined onClick={refreshSeries} data-id={record.id} spin={record['hasUpdate']===undefined} twoToneColor="#eb2f96" /> 
                 <DeleteTwoTone onClick={deleteSeries} data-id={record.id} style={{fontSize:"20px"}} twoToneColor="#eb2f96" />
               </Space>
             ),
@@ -104,6 +104,18 @@ export default function UpdatePage () {
                 setSeriesListWithUpdates(tmp);
             });
         }
+    }
+
+    const refreshSeries = (e) => {
+        let seriesId = e.currentTarget.dataset.id;
+        axios.get('/api/series/'+seriesId).then((updatedSeriesInfo) => {
+            setSeriesListWithUpdates(currentSeriesList => {
+                const tmp = [...currentSeriesList];
+                let seriesIndex = tmp.findIndex((entry) => {return entry.id === seriesId})
+                tmp[seriesIndex] = updatedSeriesInfo;
+                return tmp;
+            });
+        })
     }
 
     return (
