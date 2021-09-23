@@ -45,6 +45,7 @@ module.exports = {
                 res.json(series);
             })
             .catch((err) => {
+                console.log(err);
                 res.status(422).json(err);
             });
     },

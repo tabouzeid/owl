@@ -33,17 +33,17 @@ export default function UpdatePage () {
             title: 'Series Name',
             dataIndex: 'seriesName',
             key: 'seriesName',
-            render: (theSeriesName, record) => <a onClick={markSeriesViewed} data-id={record.id} data-chapterNumber={record.latestChapter} rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><span style={record.hasUpdate ? {fontWeight: 'bold'} : {}}>{theSeriesName}</span></a>,
+            render: (theSeriesName, record) => (
+                <Space size="middle">
+                    <img className="fit-picture" src={"https://manganato.com/favicon.png"} alt="Series site URL"/>
+                    <a onClick={markSeriesViewed} data-id={record.id} data-chapterNumber={record.latestChapter} rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><span style={record.hasUpdate ? {fontWeight: 'bold'} : {}}>{theSeriesName}</span></a>
+                </Space>
+            ),
         },
         {
             title: 'Chapter',
             dataIndex: 'latestChapter',
             key: 'chapterNumber',
-        },
-        {
-            title: 'Site',
-            dataIndex: 'SeriesSite.siteName',
-            key: 'site',
         },
         {
             title: 'Action',
