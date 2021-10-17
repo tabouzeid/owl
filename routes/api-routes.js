@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const {DateTime} = require("luxon");
 
 const db = require("../models");
-const manganeloParser = require("../parser/ManganeloParser");
+const manganeloParser = require("../parser/ManganeloHandler");
 const AccessMiddleware = require("../config/middleware/isAuthenticated");
 const seriesController = require('../controller/seriesController');
 const siteController = require('../controller/siteController');
