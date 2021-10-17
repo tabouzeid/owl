@@ -56,13 +56,14 @@ function SearchPage() {
     }
 
     /**
-     * author: "Kazanami Shi<span style="color: #FF530D;font-weight: bold;">nog</span>i, Miwa Yoshiyuki"
-     * id: "899"
-     * id_encode: "the_new_gate"
-     * image: "https://avt.mkklcdnv6.com/33/d/1-1583464999.jpg"
-     * lastchapter: "Chapter 60"
-     * name: "The New Gate"
-     * nameunsigned: "the_new_gate"
+     * "id": "1977",
+     * "id_encode": "dnha19771568647794",
+     * "name": "<span style=\"color: #FF530D;font-weight: bold;\">tensei</span> Shitara Slime Datta Ken",
+     * "nameunsigned": "dnha19771568647794",
+     * "lastchapter": "Chapter 88: A Demon and a Plot",
+     * "image": "https://avt.mkklcdnv6temp.com/19/y/2-1583466482.jpg",
+     * "author": "Fuse, Kawakami Taiki",
+     * "link_story": "https://readmanganato.com/manga-tz953334"
      * @param searchString
      */
     const search = () => {
@@ -73,14 +74,16 @@ function SearchPage() {
                     const results = [];
                     let jsonResult = response.data;
                     for (let i = 0; i < jsonResult.length; i++) {
-                        jsonResult[i].name = jsonResult[i].name.toLowerCase().replace(/(<([^>]+)>)/gi, "");
-                        jsonResult[i].name = jsonResult[i].name.split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
+                        let series = jsonResult[i];
+                        series.name = series.name.toLowerCase().replace(/(<([^>]+)>)/gi, "");
+                        series.name = series.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
+                        let seriesId = series.link_story.substring(series.link_story.lastIndexOf('/') + 1);
                         results.push({
-                            seriesIdOnSite: jsonResult[i].id_encode,
-                            seriesName: jsonResult[i].name,
-                            seriesImageUrl: jsonResult[i].image,
+                            seriesIdOnSite: seriesId,
+                            seriesName: series.name,
+                            seriesImageUrl: series.image,
                             // eslint-disable-next-line
-                            seriesUrl: siteSelected.seriesUrlTemplate.replace('${seriesId}', jsonResult[i].id_encode),
+                            seriesUrl: siteSelected.seriesUrlTemplate.replace('${seriesId}', seriesId),
                         });
                     }
                     setSearchResultsState(results);
