@@ -44,6 +44,11 @@ export default function UpdatePage () {
             title: 'Chapter',
             dataIndex: 'latestChapter',
             key: 'chapterNumber',
+            render: (theLatestChapter, record) => (
+                <Space size="middle">
+                    <p>{record.lastChapterViewed+"/"+theLatestChapter}</p>
+                </Space>
+            )
         },
         {
             title: 'Action',

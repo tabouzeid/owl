@@ -140,6 +140,9 @@ module.exports = function(app) {
                     hasUpdate = true;
                 }
             });
+            if (series.lastChapterViewed > latestChapter){
+                hasUpdate = true;
+            }
             series.hasUpdate = hasUpdate;
             series.latestChapter = latestChapter; 
         }

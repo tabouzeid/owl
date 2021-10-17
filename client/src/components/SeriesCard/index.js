@@ -4,7 +4,7 @@ import "./style.css";
 
 function SeriesCard(props) {
     // eslint-disable-next-line
-    const seriesUrl = props.site.seriesUrlTemplate.replace('${seriesId}', props.series.seriesIdOnSite);
+    const seriesUrl = props.series.seriesUrl;
     const seriesName = props.series.seriesName;
     const imageUrl = props.series.seriesImageUrl;
 
