@@ -1,7 +1,5 @@
 // Routes
 // =============================================================
-const axios = require("axios");
-const cheerio = require("cheerio");
 const bcrypt = require("bcryptjs");
 const {DateTime} = require("luxon");
 
@@ -123,24 +121,9 @@ module.exports = function(app) {
         for (const series of seriesList) {
             const seriesUrl = series['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', series.seriesIdOnSite);
             const latestChapter = await manganeloParser.getLatestManganeloChapter(seriesUrl);
-            const seriesLastChecked = DateTime.fromJSDate(series.lastChecked);
-            const seriesInfoOnSite =  await axios.get(seriesUrl,
-                {
-                    headers: {
-                        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-                    }
-                }
-            )
-            const $ = cheerio.load(seriesInfoOnSite.data);
-            const dates = $(".chapter-time");
+            
             let hasUpdate = false;
-            dates.each((index, date) => {
-                let currDate = manganeloParser.parseDate($(date).text().trim())
-                if(currDate > seriesLastChecked){
-                    hasUpdate = true;
-                }
-            });
-            if (series.lastChapterViewed > latestChapter){
+            if (latestChapter > series.lastChapterViewed){
                 hasUpdate = true;
             }
             series.hasUpdate = hasUpdate;
