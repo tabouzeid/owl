@@ -31,6 +31,26 @@ async function getLatestManganeloChapter(seriesUrl) {
     return chapterNumber;
 }
 
+async function getLastPublicationDate(seriesUrl)  {
+    const seriesInfoOnSite =  await axios.get(seriesUrl,
+        {
+            headers: {
+                accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+            }
+        }
+    )
+    const $ = cheerio.load(seriesInfoOnSite.data);
+    let lastPublicationDate;
+    const dates = $(".chapter-time");
+    dates.each((index, date) => {
+        let currDate = manganeloParser.parseDate($(date).text().trim())
+        if(currDate > lastPublicationDate){
+            lastPublicationDate = currDate;
+        }
+    });
+    return lastPublicationDate;
+}
+
 function parseDate(dateString) {
     let result;
     if(dateString.endsWith(" ago")){
@@ -54,5 +74,6 @@ function parseDate(dateString) {
 
 module.exports = {
     getLatestManganeloChapter: getLatestManganeloChapter,
+    getLastPublicationDate: getLastPublicationDate,
     parseDate: parseDate
 };
