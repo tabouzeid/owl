@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
 import DynamicModal from "../DynamicModal";
 import axios from 'axios';
-import { Table, Space } from "antd";
+import { Form, Table, Space, Button, Modal, Input } from "antd";
 
 export default function SiteListPage() {
     const [sites, setSites] = useState([]);
     const [index, setIndex] = useState(-1);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const modalName = "siteModal";
+
+    const showModal = () => {
+      setIsModalVisible(true);
+    };
+  
+    const handleOk = () => {
+      setIsModalVisible(false);
+    };
+  
+    const handleCancel = () => {
+      setIsModalVisible(false);
+    };
 
     useEffect(() => {
         axios.get('/api/site')
@@ -50,6 +63,15 @@ export default function SiteListPage() {
         });
     }
 
+    const layout = {
+        labelCol: {
+          span: 8,
+        },
+        wrapperCol: {
+          span: 16,
+        },
+      };
+
     const columns = [
         {
             title: 'Logo',
@@ -90,6 +112,25 @@ export default function SiteListPage() {
                 <div className="row">
                     <div className="col-4"/>
                     <div className="col-4">
+                        <Button type="primary" onClick={showModal}>
+                            Add Site
+                        </Button>
+                        <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okText={"Submit"}>
+                            <Form {...layout} name="siteForm" autoComplete="off">
+                                <Form.Item label="Site Name">
+                                    <Input/>
+                                </Form.Item>
+                                <Form.Item label="Site Logo">
+                                    <Input/>
+                                </Form.Item>
+                                <Form.Item label="Series URL Template">
+                                    <Input/>
+                                </Form.Item>
+                                <Form.Item label="Site URL">
+                                    <Input/>
+                                </Form.Item>
+                            </Form>
+                        </Modal>
                         <Table columns={columns} dataSource={sites} />
                     </div>
                     <div className="col-4"/>
