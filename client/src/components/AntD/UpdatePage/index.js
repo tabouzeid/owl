@@ -36,7 +36,7 @@ export default function UpdatePage () {
             render: (theSeriesName, record) => (
                 <Space size="middle">
                     <img className="fit-picture" src={"https://manganato.com/favicon.png"} alt="Series site URL"/>
-                    <a onClick={markSeriesViewed} data-id={record.id} data-chapterNumber={record.latestChapter} rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><span style={record.hasUpdate ? {fontWeight: 'bold'} : {}}>{theSeriesName}</span></a>
+                    <a onClick={markSeriesViewed} data-id={record.id} data-chapternumber={record.latestChapter} rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><span style={record.hasUpdate ? {fontWeight: 'bold'} : {}}>{theSeriesName}</span></a>
                 </Space>
             ),
         },
@@ -55,7 +55,7 @@ export default function UpdatePage () {
             key: 'action',
             render: (text, record) => (
               <Space size="middle">
-                <SyncOutlined onClick={refreshSeries} data-id={record.id} spin={record['hasUpdate']===undefined} twoToneColor="#eb2f96" /> 
+                <SyncOutlined onClick={refreshSeries} data-id={record.id} spin={record['hasUpdate']===undefined} twoToneColor="#eb2f96" />
                 <DeleteTwoTone onClick={deleteSeries} data-id={record.id} style={{fontSize:"20px"}} twoToneColor="#eb2f96" />
               </Space>
             ),
@@ -130,12 +130,12 @@ export default function UpdatePage () {
                     <h1 className="display-1 text-center">Media Updates</h1>
                     <Form layout="inline" className="components-table-demo-control-bar" style={{ marginBottom: 16 }}>
                         <Form.Item label="Hide Read">
-                            <Switch checked={hideRead} onChange={flipFlag} />                        
+                            <Switch checked={hideRead} onChange={flipFlag} />
                         </Form.Item>
                     </Form>
-                    <Table 
+                    <Table
                         columns={columns}
-                        rowKey={record => record.id} 
+                        rowKey={record => record.id}
                         loading={seriesListWithUpdates.length === 0}
                         dataSource={seriesListWithUpdates.filter((series) => series.hasUpdate === true || hideRead === false)} />
                 </div>
