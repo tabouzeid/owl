@@ -59,7 +59,7 @@ module.exports = function (sequelize, DataTypes) {
             },
         },
         lastChapterViewed: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: true,
             defaultValue: 0,
         },

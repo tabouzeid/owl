@@ -21,12 +21,12 @@ async function getLatestManganeloChapter(seriesUrl) {
         if (chapter){
             let chapterNum = chapter[0].split(' ');
             if(chapterNum) {
-                let tmp = parseFloat(chapterNum[chapterNum.length-1]);
+                let tmp = parseFloat(chapter.join('.'));
                 if(tmp > chapterNumber) {
                     chapterNumber = tmp;
                 }
             }
-        } 
+        }
     });
     return chapterNumber;
 }
