@@ -43,7 +43,7 @@ async function getLastPublicationDate(seriesUrl)  {
     let lastPublicationDate;
     const dates = $(".chapter-time");
     dates.each((index, date) => {
-        let currDate = manganeloParser.parseDate($(date).text().trim())
+        let currDate = parseDate($(date).text().trim())
         if(currDate > lastPublicationDate){
             lastPublicationDate = currDate;
         }
