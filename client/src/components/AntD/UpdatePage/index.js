@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default function UpdatePage () {
     const [seriesListWithUpdates, setSeriesListWithUpdates] = useState([]);
-    const [hideRead, setHideRead] = useState(true);
+    const [hideRead, setHideRead] = useState(false);
 
     useEffect(() => {
         axios.get('/api/series')
@@ -55,7 +55,7 @@ export default function UpdatePage () {
             key: 'action',
             render: (text, record) => (
               <Space size="middle">
-                <SyncOutlined onClick={refreshSeries} data-id={record.id} spin={record['hasUpdate']===undefined} twoToneColor="#eb2f96" />
+                <SyncOutlined onClick={refreshSeries} data-id={record.id} spin={!('hasUpdate' in record)} twoToneColor="#eb2f96" />
                 <DeleteTwoTone onClick={deleteSeries} data-id={record.id} style={{fontSize:"20px"}} twoToneColor="#eb2f96" />
               </Space>
             ),
@@ -89,7 +89,7 @@ export default function UpdatePage () {
         const body = { lastChapter: chapterNumber };
         if (seriesId){
             axios.put(`/api/series/${seriesId}/mark_last_checked`, body);
-            const seriesIndex = seriesListWithUpdates.findIndex((series) => series.id === seriesId);
+            const seriesIndex = seriesListWithUpdates.findIndex((series) => series.id == seriesId);
             if(seriesIndex >= 0){
                 const tmp = [...seriesListWithUpdates];
                 tmp[seriesIndex].hasUpdate = false;
@@ -113,11 +113,16 @@ export default function UpdatePage () {
 
     const refreshSeries = (e) => {
         let seriesId = e.currentTarget.dataset.id;
+        const seriesIndex = seriesListWithUpdates.findIndex((entry) => {return entry.id == seriesId})
+        setSeriesListWithUpdates(currentSeriesList => {
+            let tmp = [...currentSeriesList];
+            delete tmp[seriesIndex].hasUpdate;
+            return tmp;
+        });
         axios.get('/api/series/'+seriesId).then((updatedSeriesInfo) => {
             setSeriesListWithUpdates(currentSeriesList => {
                 const tmp = [...currentSeriesList];
-                let seriesIndex = tmp.findIndex((entry) => {return entry.id === seriesId})
-                tmp[seriesIndex] = updatedSeriesInfo;
+                tmp[seriesIndex] = updatedSeriesInfo.data[0];
                 return tmp;
             });
         })

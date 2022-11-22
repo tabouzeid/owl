@@ -106,4 +106,8 @@ dist
 # Jetbrains
 .idea
 
+# MacOS
+.DS_Store
+
 client/build
+seed/
