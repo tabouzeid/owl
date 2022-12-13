@@ -5,17 +5,21 @@ import axios from "axios";
 
 export default function UpdatePage () {
     const [seriesListWithUpdates, setSeriesListWithUpdates] = useState([]);
-    const [hideRead, setHideRead] = useState(false);
+    const [hideRead, setHideRead] = useState(true);
 
     useEffect(() => {
         axios.get('/api/series')
-            .then((resp) => {                
-                resp.data.forEach(series => {
-                    axios.get('/api/series/'+series.id).then((updatedSeriesInfo) => {
+            .then((resp) => {
+                const firstTmp = [...resp.data];
+                setSeriesListWithUpdates(sortSeries(firstTmp));
+                firstTmp.forEach(series => {
+                    const seriesId = series.id;
+                    const seriesIndex = firstTmp.findIndex((entry) => {return entry.id == seriesId})
+                    axios.get('/api/series/'+seriesId).then((updatedSeriesInfo) => {
                         setSeriesListWithUpdates(currentSeriesList => {
                             const tmp = [...currentSeriesList];
-                            tmp.push(updatedSeriesInfo.data[0]);
-                            return sortSeries(tmp);
+                            tmp[seriesIndex] = updatedSeriesInfo.data[0];
+                            return tmp;
                         });
                     })
                 });
@@ -27,6 +31,7 @@ export default function UpdatePage () {
             title: 'Series Image',
             dataIndex: 'seriesImageUrl',
             key: 'seriesImage',
+            // eslint-disable-next-line
             render: (theImageURL, record) => <a rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><img alt="Series Cover" src={theImageURL} width="50"/></a>,
         },
         {
@@ -36,6 +41,7 @@ export default function UpdatePage () {
             render: (theSeriesName, record) => (
                 <Space size="middle">
                     <img className="fit-picture" src={"https://manganato.com/favicon.png"} alt="Series site URL"/>
+                    {/* eslint-disable-next-line */}
                     <a onClick={markSeriesViewed} data-id={record.id} data-chapternumber={record.latestChapter} rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><span style={record.hasUpdate ? {fontWeight: 'bold'} : {}}>{theSeriesName}</span></a>
                 </Space>
             ),
@@ -46,7 +52,7 @@ export default function UpdatePage () {
             key: 'chapterNumber',
             render: (theLatestChapter, record) => (
                 <Space size="middle">
-                    <p>{record.lastChapterViewed+"/"+theLatestChapter}</p>
+                    <p>{record.lastChapterViewed+" / "+(theLatestChapter ? theLatestChapter : '...')}</p>
                 </Space>
             )
         },
@@ -55,7 +61,7 @@ export default function UpdatePage () {
             key: 'action',
             render: (text, record) => (
               <Space size="middle">
-                <SyncOutlined onClick={refreshSeries} data-id={record.id} spin={!('hasUpdate' in record)} twoToneColor="#eb2f96" />
+                <SyncOutlined onClick={refreshSeriesHandler} data-id={record.id} spin={!('hasUpdate' in record)} twoToneColor="#eb2f96" />
                 <DeleteTwoTone onClick={deleteSeries} data-id={record.id} style={{fontSize:"20px"}} twoToneColor="#eb2f96" />
               </Space>
             ),
@@ -111,21 +117,26 @@ export default function UpdatePage () {
         }
     }
 
-    const refreshSeries = (e) => {
+    const refreshSeriesHandler = (e) => {
         let seriesId = e.currentTarget.dataset.id;
         const seriesIndex = seriesListWithUpdates.findIndex((entry) => {return entry.id == seriesId})
-        setSeriesListWithUpdates(currentSeriesList => {
-            let tmp = [...currentSeriesList];
-            delete tmp[seriesIndex].hasUpdate;
-            return tmp;
-        });
-        axios.get('/api/series/'+seriesId).then((updatedSeriesInfo) => {
-            setSeriesListWithUpdates(currentSeriesList => {
-                const tmp = [...currentSeriesList];
-                tmp[seriesIndex] = updatedSeriesInfo.data[0];
-                return tmp;
-            });
-        })
+        if(seriesIndex >= parseInt(seriesIndex)){
+            const series = seriesListWithUpdates[seriesIndex];
+            if(series){
+                setSeriesListWithUpdates(currentSeriesList => {
+                    let tmp = [...currentSeriesList];
+                    delete tmp[seriesIndex].hasUpdate;
+                    return tmp;
+                });
+                axios.get('/api/series/'+seriesId).then((updatedSeriesInfo) => {
+                    setSeriesListWithUpdates(currentSeriesList => {
+                        const tmp = [...currentSeriesList];
+                        tmp[seriesIndex] = updatedSeriesInfo.data[0];
+                        return tmp;
+                    });
+                })
+            }
+        }
     }
 
     return (
@@ -142,7 +153,7 @@ export default function UpdatePage () {
                         columns={columns}
                         rowKey={record => record.id}
                         loading={seriesListWithUpdates.length === 0}
-                        dataSource={seriesListWithUpdates.filter((series) => series.hasUpdate === true || hideRead === false)} />
+                        dataSource={seriesListWithUpdates.filter((series) => series.hasUpdate === true || hideRead === false || !('hasUpdate' in series))} />
                 </div>
             </div>
         </div>
