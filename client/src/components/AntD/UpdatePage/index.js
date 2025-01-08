@@ -31,6 +31,7 @@ export default function UpdatePage () {
             title: 'Series Image',
             dataIndex: 'seriesImageUrl',
             key: 'seriesImage',
+            width: '10%',
             // eslint-disable-next-line
             render: (theImageURL, record) => <a rel="noopener noreferrer" target="_blank" href={record['SeriesSite.seriesUrlTemplate'].replace('${seriesId}', record.seriesIdOnSite)}><img alt="Series Cover" src={theImageURL} width="50"/></a>,
         },
@@ -59,6 +60,7 @@ export default function UpdatePage () {
         {
             title: 'Action',
             key: 'action',
+            width: '15%',
             render: (text, record) => (
               <Space size="middle">
                 <SyncOutlined onClick={refreshSeriesHandler} data-id={record.id} spin={!('hasUpdate' in record)} twoToneColor="#eb2f96" />
