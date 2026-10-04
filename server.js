@@ -4,6 +4,7 @@
 // ******************************************************************************
 // *** Dependencies
 // =============================================================
+require("dotenv").config();
 const express = require("express");
 const passport = require('passport');
 const path = require('path');

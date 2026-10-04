@@ -1,23 +1,35 @@
 {
   "development": {
-    "username": "root",
-    "password": "password",
-    "database": "media_updates_db",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    },
     "logging": false
   },
   "test": {
-    "username": "root",
-    "password": "password",
-    "database": "media_updates_db",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    },
     "logging": false
   },
   "production": {
-    "use_env_variable": "JAWSDB_URL",
-    "dialect": "mysql",
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    },
     "logging": false
   }
 }
